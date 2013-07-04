@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block options %}
+    {% include "opciones.html" %}
+{% endblock %}
+{% block body %}   
+    
+        <form>
+            <div>
+                <p>
+                <dl class="dl-horizontal">
+                    <dt>
+                        Tarea:
+                    </dt>
+                        <dd> La tarea es esta</dd>
+                    <dt>
+                        Descripcion:
+                    </dt>
+                        <dd> esta es una descriocion esta es una descriocion esta es una descriocion esta es una descriocionesta es una descriocion </dd>
+                    <dt>
+                        Categoria:
+                    </dt>
+                        <dd> categoria a</dd>
+                    <dt>
+                        Tipo:
+                    </dt>
+                        <dd> Estes es un tipo</dd>
+                    <dt>
+                        Rubro:
+                    </dt>
+                        <dd>Rubro B</dd>
+                   <dt>
+                        Actualmente asignado a:
+                    </dt>
+                        <dd>Williams bladimir dayz</dd>
+                </dl>
+                </p>
+                Personal :
+                <select>
+                    <option>Trabajador 1</option>
+                    <option>Trabajador 2</option>
+                    <option>Trabajador 3</option>
+                </select>
+            </div>
+            <div>
+                <button class="btn">Reasignar</button>
+            </div>
+        </form>
+    
+{% endblock %}

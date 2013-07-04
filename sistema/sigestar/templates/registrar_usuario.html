@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block options %}
+    {% include "opciones.html" %}
+{% endblock %}
+{% block body %}
+    <form class="well" method="POST"> {% csrf_token %}
+        <fieldset>
+            <legend>
+                Registrar personal
+            </legend>
+            <div class="control-group">
+                {{ rf.nombre.errors }}
+                <label>Nombre</label>
+                {{ rf.nombre }}
+            </div>
+            <div class="control-group">
+                {{ rf.apellido.errors }}
+                <label>Apellidos</label>
+                {{ rf.apellido }}
+            </div>
+            <div class="control-group">
+                {{ rf.dni.errors }}
+                <label>Dni</label>
+                {{ rf.dni }}
+            </div>
+            <div class="control-group">
+                {{ rf.email.errors }}
+                <label>E-mail</label>
+                {{ rf.email }}
+            </div>
+            <div class="control-group">
+                <label>Telefono</label>
+                {{ rf.telefono }}
+            </div>
+            <div class="control-group">
+                <label>Direccion</label>
+                {{ rf.direccion }}
+            </div>
+            <div class="control-group">
+                {{ rf.especialidad.errors }}
+                <label>Especialidad</label>
+                {{ rf.especialidad }}
+                <a onclick="function niguno() {
+                $('#id_especialidad option:selected').removeAttr('selected');
+            }
+            niguno()">Ninguno
+                </a>
+            </div>
+            <div class="control-group">
+                <label>Empresa</label>
+                {{ rf.empresa }}
+            </div>
+            <div class="control-group">
+                <label>DBA</label>
+                {{ rf.dba }}
+            </div>
+            <div class="control-group">
+                <label>Administrador</label>
+                {{ rf.admin }}
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn">Registrar</button>
+        </div>
+    </form>
+
+{% endblock %}

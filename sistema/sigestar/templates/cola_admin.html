@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% block filtro %}
+    <div class="filtro">
+        <form method="get">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#fecha">FECHA <i
+                            class="icon-chevron-down" style="float:right;"></i> </a>
+                </div>
+                <div id="fecha" class="accordion-body collapse" style="height: 0px; ">
+                    <div class="accordion-inner">
+                        <ul class="nav nav-list">
+                            <li>
+                                <input type="radio" name="fecha" value="t" checked="true"/> Todas las fechas
+                            </li>
+                            <li>
+                                <input type="radio" name="fecha" value="lw"> Ultima semana
+                            </li>
+                            <li>
+                                <input type="radio" name="fecha" value="lm"> Ultima mes
+                            </li>
+                            <li>
+                                <input type="radio" name="fecha" value="ly"> Ultimo año
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#personal">PERSONAL<i
+                            class="icon-chevron-down" style="float:right;"></i></a>
+                </div>
+                <div id="personal" class="accordion-body collapse" style="height: 0px; ">
+                    <div class="accordion-inner">
+                        <ul class="nav nav-list">
+                            <li>
+                                <input type="radio" name="personal" value="0" checked="true"/> Todos</a>
+                            </li>
+                            {% for e in emps %}
+                                <li>
+                                    <input type="radio" name="personal" value="{{ e.id }}"/> {{ e.get_full_name }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#tipo">
+                        TIPO
+                        <i class="icon-chevron-down" style="float:right;"></i></a>
+                </div>
+                <div id="tipo" class="accordion-body collapse" style="height: 0px; ">
+                    <div class="accordion-inner">
+                        <ul class="nav nav-list">
+
+                            <li>
+                                <input type="radio" name="tipo" value="0" onChange="aparecer_filtro('todos')"
+                                       checked="true"/> Todos
+                            </li>
+                            {% for tipo in tipos %}
+                                <li>
+                                    <input type="radio" name="tipo" onChange="aparecer_filtro('{{ tipo }}')"
+                                           value="{{tipo.id}}"/> {{ tipo }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion4" href="#categoria">
+                        CATEGORIA
+                        <i class="icon-chevron-down" style="float:right;"></i></a>
+                </div>
+                <div id="categoria" class="accordion-body collapse" style="height: 0px; ">
+                    <div class="accordion-inner">
+                        <ul class="nav nav-list">
+                            <li>
+                                <input type="radio" name="cat" value="0" checked="true"/> Todos
+                            </li>
+                            {% for cat in cats %}
+                                <li>
+                                    <input type="radio" name="cat" value="{{ cat.id }}"/> {{ cat }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group" id="filtro_subcategoria">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion5" href="#especialidad">
+                        SUBCATEGORIAS
+                        <i class="icon-chevron-down" style="float:right;"></i></a>
+                </div>
+                <div id="especialidad" class="accordion-body collapse" style="height: 0px; ">
+                    <div class="accordion-inner">
+                        <ul class="nav nav-list">
+                            <li>
+                                <input type="radio" name="esp" value="0" checked="true"/> Todas
+                            </li>
+                            {% for esp in esps %}
+                                <li>
+                                    <input type="radio" name="esp" value="{{ esp.codigo }}"/> {{ esp }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion6" href="#estado">
+                        ESTADO
+                        <i class="icon-chevron-down" style="float:right;"></i></a>
+                </div>
+                <div id="estado" class="accordion-body collapse" style="height: 0px; ">
+                    <div class="accordion-inner">
+                        <ul class="nav nav-list">
+                            <li>
+                                <input type="radio" name="estado" value="0" checked="true"/> Todos
+                            </li>
+                            <li>
+                                <input type="radio" name="estado" value="1"/> Pendiente
+                            </li>
+                            <li>
+                                <input type="radio" name="estado" value="2"/> Ejecutándose
+                            </li>
+                            <li>
+                                <input type="radio" name="estado" value="3"/> Pausada
+                            </li>
+                            <li>
+                                <input type="radio" name="estado" value="4"/> Terminada
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <input style="width: 100%; height: 34px;" type="submit" value="Consultar" datatoogle="collapse"
+                           data-parent="#accordition7" class="accordion-toggle btn">
+                </div>
+            </div>
+        </form>
+        {% if user.get_profile.is_admin %}
+            <a class="" id="btn_sol" data-toggle="modal" href="#myModal"> <i class="icon-pencil "></i> Crear solicitud
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block body %}
+    {% if filtros %}
+        <div id="alert" class="alert fade in">
+            <button class="close" onclick="cerraralerta()" data-dismiss="alert alert-info">×</button>
+            <strong style="margin-bottom: 5px; display: block;">Filtrado por</strong></br>
+            <div class="control-group">
+                {% if filtros.personal and filtros.personal != '0' %}
+                    <p>Personal: {{ filtros.personal }}</p>
+                {% endif %}
+                {% if filtros.fecha and filtros.fecha != 't' %}
+                    <p>Fecha: {{ filtros.fecha }}</p>
+                {% endif %}
+                {% if filtros.tipo and filtros.tipo != '0' %}
+                    <p>Tipo: {{ filtros.tipo }}</p>
+                {% endif %}
+                {% if filtros.cat and filtros.cat != '0' %}
+                    <p>Categoria: {{ filtros.cat }}</p>
+                {% endif %}
+                {% if filtros.estado and filtros.estado != '0' %}
+                    <p>Estado: {{ filtros.estado }}</p>
+                {% endif %}
+                {% if filtros.esp and filtros.esp != '0' %}
+                    <p>Especialidad: {{ filtros.esp }}</p>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    <div class="cola_tareas">
+        <p>Cola de tareas</p>
+
+        <div id="cola_sol">
+            {% include "ver_cola.html" %}
+        </div>
+    </div>
+    <div class="pager page-header">
+            <span class="step-links">
+                {% if sols.has_previous %}
+                    <a style="cursor: pointer;" onclick="function a(){
+                            if(location.href.charAt(location.href.length-1)=='/'){
+                            location.href = location.href+'?page={{ sols.previous_page_number }}';
+                            }
+                            else{
+                            if(location.href.indexOf('page')>=0){
+                            var b = location.href.substring(0,location.href.indexOf('page'));
+                            location.href= b+'page={{ sols.previous_page_number }}';
+                            } else {
+                            location.href = location.href+'&page={{ sols.previous_page_number }}';
+                            }
+                            }
+                            } a();"><b><<</b></a>
+                {% endif %}
+                <span class="current">Page {{ sols.number }} of {{ sols.paginator.num_pages }}.</span>
+                {% if sols.has_next %}
+                    <a style="cursor: pointer;" onclick="function a(){
+                            if(location.href.charAt(location.href.length-1)=='/'){
+                            location.href = location.href+'?page={{ sols.next_page_number }}';
+                            }
+                            else{
+                            if(location.href.indexOf('page')>=0){
+                            var b = location.href.substring(0,location.href.indexOf('page'));
+                            location.href= b+'page={{ sols.next_page_number }}';
+                            } else {
+                            location.href = location.href+'&page={{ sols.next_page_number }}';
+                            }
+                            }
+                            } a();"><b>>></b></a>
+                {% endif %}
+            </span>
+    </div>
+
+{% endblock %}

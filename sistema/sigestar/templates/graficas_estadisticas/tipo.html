@@ -1,0 +1,59 @@
+
+
+{% extends "graficas_estadisticas/base_estadistica.html" %}
+{% block script_estadistica %}
+            <script type="text/javascript">
+                function cargar(tipos,mes) {
+                    chart = new Highcharts.Chart({
+                        chart: {
+                            renderTo: 'container',
+                            plotBackgroundColor: null,
+                            plotBorderWidth: null,
+                            plotShadow: false
+                        },
+                        title: {
+                            text: 'Porcentaje del tipo de solicitud ('+mes+')'
+                        },
+                        tooltip: {
+                            formatter: function() {
+                                return '<b>'+ this.point.name +'</b>: '+ this.percentage.toFixed(2)  +' %';
+                            }
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    color: '#000000',
+                                    connectorColor: '#000000',
+                                    formatter: function() {
+                                        return '<b>'+ this.point.name +'</b>: '+ this.y +' solicitudes </br>'+
+                                        '('+this.percentage.toFixed(2)  +' %)' ;
+                                    }
+                                }
+                            }
+                        },
+                        series: [{
+                            type: 'pie',
+                            name: 'Browser share',
+                            data: tipos
+                        }]
+                    });
+                }
+
+            </script>
+{% endblock %}
+{% block options %}
+    {% include "opciones.html" %}
+{% endblock %}
+{% block body_action %}
+    <body onload="cargar({{ tipo }},'{{ mes }} - {{ anio }}')">                
+{% endblock %} 
+{% block body %}
+        <div>
+            {% include "graficas_estadisticas/anio_mes.html" %}
+        </div>
+        <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto">
+        </div>                  
+{% endblock %} 

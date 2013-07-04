@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="cola_tareas">
+        <p>Cola de tareas</p>
+
+        <div id="cola_sol">
+            {% include "ver_cola.html" %}
+        </div>
+    </div>
+    <div class="pager page-header">
+            <span class="step-links">
+                {% if sols.has_previous %}
+                    <a href="?page={{ sols.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current">Page {{ sols.number }} of {{ sols.paginator.num_pages }}.</span>
+                {% if sols.has_next %}
+                    <a href="?page={{ sols.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+    </div>
+{% endblock %}

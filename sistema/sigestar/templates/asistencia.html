@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block options %}
+    {% include "opciones.html" %}
+{% endblock %}
+{% block body %}
+
+    <form class="well" method="GET">
+        <fieldset>
+            <div class="control-group">
+                <label>Nombre</label>
+                <select name="per">
+                    {% for e in emps %}
+                        {% if e.id == select %}
+                            <option value="{{ e.id }}" selected="selected"> {{ e.get_full_name }} </option>
+                        {% else %}
+                            <option value="{{ e.id }}"> {{ e.get_full_name }} </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn">Cargar</button>
+        </div>
+    </form>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>asistencia</th>
+            <th>fecha hora de marcado</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for a in asis %}
+            <tr>
+                <td>{% if a.valor %}
+                    Asistió
+                {% else %}
+                    Faltó
+                {% endif %}</td>
+                <td>{% if a.valor %}
+                    {{ a.fecha|date:"d-m-Y H:i:s" }}
+                {% else %}
+                    {{ a.turno_ini|date:"d-m-Y" }}
+                {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block options %}
+    {% include "opciones.html" %}
+{% endblock %}
+{% block body %}
+    <form class="well" method="GET">
+        <fieldset>
+            <div class="control-group">
+                <label>Nombre</label>
+                <select name="per">
+                    {% for e in emps %}
+                        {% if e.id == select %}
+                            <option value="{{ e.id }}" selected="selected"> {{ e.get_full_name }} </option>
+                        {% else %}
+                            <option value="{{ e.id }}"> {{ e.get_full_name }} </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn">Cargar</button>
+        </div>
+    </form>
+    <form class="well {{ hidden }}" method="post"> {% csrf_token %}
+        <fieldset id="horarios">
+            <div class="control-group">
+                <div class="row-fluid">
+                    <div class="span2">Lunes</div>
+                    {{ form.lunes }}
+                </div>
+                <div class="row-fluid">
+                    <div class="span2">Martes</div>
+                    {{ form.martes }}
+                </div>
+                <div class="row-fluid">
+                    <div class="span2">Miercoles</div>
+                    {{ form.miercoles }}
+                </div>
+                <div class="row-fluid">
+                    <div class="span2">Jueves</div>
+                    {{ form.jueves }}
+                </div>
+                <div class="row-fluid">
+                    <div class="span2">Viernes</div>
+                    {{ form.viernes }}
+                </div>
+                <div class="row-fluid">
+                    <div class="span2">Sabado</div>
+                    {{ form.sabado }}
+                </div>
+                <div class="row-fluid">
+                    <div class="span2">Domingo</div>
+                    {{ form.domingo }}
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <input type="hidden" name="id" value="{{ select }}">
+            <button type="submit" class="btn" name="guardar">Guardar</button>
+        </div>
+    </form>
+
+{% endblock %}

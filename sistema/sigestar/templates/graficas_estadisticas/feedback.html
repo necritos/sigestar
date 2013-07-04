@@ -1,0 +1,60 @@
+
+
+{% extends "graficas_estadisticas/base_estadistica.html" %}
+{% block script_estadistica %}
+            <script type="text/javascript">
+                var chart;
+                function cargar(fedd, mes , anio){
+                    chart = new Highcharts.Chart({
+                        chart: {
+                            renderTo: 'container',
+                            plotBackgroundColor: null,
+                            plotBorderWidth: null,
+                            plotShadow: false
+                        },
+                        title: {
+                            text: 'Porcentaje mensual de incidentes ('+ mes +' - '+ anio +')'
+                        },
+                        tooltip: {
+                            formatter: function() {
+                                return '<b>'+ this.point.name +'</b>: '+ this.percentage.toFixed(2) +' %';
+                            }
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    color: '#000000',
+                                    connectorColor: '#000000',
+                                    formatter: function() {
+                                        return '<b>'+ this.point.name +'</b>: '+ this.y +' incidentes </br>'+
+                                        '('+this.percentage.toFixed(2) +' %)' ;
+                                    }
+                                }
+                            }
+                        },
+                        series: [{
+                            type: 'pie',
+                            name: 'Browser share',
+                            data: fedd
+                            
+                        }]
+                    });
+                }
+    </script>
+{% endblock %}
+{% block options %}
+    {% include "opciones.html" %}
+{% endblock %}
+{% block body_action %}
+    <body onload="cargar({{ data }},'{{ mes }}','{{ anio }}')">            
+{% endblock %} 
+{% block body %}
+        <div>
+            {% include "graficas_estadisticas/anio_mes.html" %}
+        </div>
+        <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto">
+        </div>                  
+{% endblock %} 

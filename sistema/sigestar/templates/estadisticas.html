@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block options %}
+    {% include "opciones.html" %}
+{% endblock %}
+{% block body %}
+        <p>Estadisticas</p>
+        <div id="cola_sol">
+            {% include "ver_estadistica.html" %}
+        </div>
+{% endblock %}

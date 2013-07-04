@@ -1,0 +1,172 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        var b = "";
+        if (location.href.indexOf('?') >= 0) {
+            b = location.href.substring(location.href.indexOf('?'), location.href.length);
+        }
+        $(".form-calificar").submit(function () {
+            $.ajax({
+                type: "POST",
+                url: "/sigestar/calificar-solicitud/",
+                data: $(this).serialize(),
+                success: function (data) {
+                    $('#cola_sol').load("/ver-cola/" + b);
+                }
+            });
+            return false;
+        });
+    });
+    function hacer(accion, id) {
+        var b = "";
+        if (location.href.indexOf('?') >= 0) {
+            b = location.href.substring(location.href.indexOf('?'), location.href.length);
+        }
+        $.ajax({
+            type: "GET",
+            url: "/sigestar/" + accion + "/" + id,
+            success: function (data) {
+                $('#cola_sol').load("/ver-cola/" + b);
+            }
+        });
+    }
+    function reasignar(solid) {
+        var emp = $('#' + solid).val();
+        var b = "";
+        if (location.href.indexOf('?') >= 0) {
+            b = location.href.substring(location.href.indexOf('?'), location.href.length);
+        }
+        $.ajax({
+            type: "GET",
+            url: "/sigestar/reasignar-solicitud/?sol=" + solid + "&emp=" + emp,
+            success: function (data) {
+                $('#cola_sol').load("/ver-cola/" + b);
+            }
+        });
+    }
+</script>
+
+<table class="table" style="margin-bottom: 0px;">
+    <thead>
+    <tr>
+        <th>Tipo</th>
+        <th>Categoria</th>
+        {% if not user.get_profile.is_admin %}
+            <th>Solicitante</th>
+        {% endif %}
+        {% if not user.get_profile.is_empleado %}
+            <th>Empleado encargado</th>
+        {% endif %}
+        <th>Estado</th>
+        {% if user.get_profile.is_empleado %}
+            <th>Acciones</th>
+        {% endif %}
+        <th>Fecha de entrada</th>
+        <th>Fecha de inicio</th>
+        <th>Fecha de fin</th>
+        <th>Detalles</th>
+        {% if user.get_profile.is_super %}
+            <th>Calificar</th>
+        {% endif %}
+    </tr>
+    </thead>
+    <tbody class="table-bordered">
+    {% for sol in sols %}
+        <tr>
+            <th style="font-weight: normal;">{{ sol.tipo }}</th>
+            <th style="font-weight: normal;">{{ sol.categoria }}</th>
+            {% if not user.get_profile.is_admin %}
+                <th style="font-weight: normal;">{{ sol.emisor.get_full_name }}</th>
+            {% endif %}
+            {% if not user.get_profile.is_empleado %}
+                {% if user.get_profile.is_super and sol.estado == 1 %}
+                    <th style="font-weight: normal;">
+                        <select id="{{ sol.id }}" onchange="reasignar({{ sol.id }})">
+                            {% for e in emps %}
+                                {% if e.id == sol.receptor.id %}
+                                    <option value="{{ e.id }}" selected="selected">{{ e.get_full_name }}</option>
+                                {% else %}
+                                    <option value="{{ e.id }}">{{ e.get_full_name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </th>
+                {% else %}
+                    <th style="font-weight: normal;">{{ sol.receptor.get_full_name }}</th>
+                {% endif %}
+            {% endif %}
+            <th style="font-weight: normal;">
+                {% if sol.estado == 1 %}
+                    Pendiente
+                {% endif %}
+                {% if sol.estado == 2 %}
+                    Ejecutándose
+                {% endif %}
+                {% if sol.estado == 3 %}
+                    Pausada
+                {% endif %}
+                {% if sol.estado == 4 %}
+                    Terminada
+                {% endif %}
+            </th>
+            {% if user.get_profile.is_empleado %}
+                <th style="font-weight: normal;">
+                    {% if sol.estado != 4 %}
+                        {% if sol.estado == 1 %}
+                            <a onclick="hacer('iniciar',{{ sol.id }})" style="cursor: pointer;">Iniciar</a>
+                        {% else %}
+                            <a onclick="hacer('terminar',{{ sol.id }})" style="cursor: pointer;">Terminar</a>
+                        {% endif %}
+                        {% if sol.estado == 3 %}
+                            <a onclick="hacer('iniciar',{{ sol.id }})" style="cursor: pointer;">Reanudar</a>
+                        {% else %}
+                            {% if sol.estado == 2 %}
+                                <a onclick="hacer('pausar',{{ sol.id }})" style="cursor: pointer;">Pausar</a>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </th>
+            {% endif %}
+            <th style="font-weight: normal;">
+                {{ sol.creacion|date:"d-m-Y H:i:s" }}
+            </th>
+            <th style="font-weight: normal;">
+                {% if sol.inicio %}
+                    {{ sol.inicio|date:"d-m-Y H:i:s" }}
+                {% else %}
+                    -----------
+                {% endif %}
+            </th>
+            <th style="font-weight: normal;">
+                {% if sol.fin and sol.estado == 4 %}
+                    {{ sol.fin|date:"d-m-Y H:i:s" }}
+                {% else %}
+                    -----------
+                {% endif %}
+            </th>
+            <th style="font-weight: normal;"><a id="btn_mas" data-toggle="modal" href="#detalles" title="ver detalles"
+                                                onclick="detalles({{ sol.id }})">Más</a></th>
+            {% if user.get_profile.is_super %}
+                <th style="font-weight: normal;">
+                    {% if sol.categoria.nombre == 'incidente' and sol.estado == 4 %}
+                        {% if not sol.calificacion %}
+                            <form method="post" class="form-calificar"
+                                  style="margin: 0 0 0px;">{% csrf_token %}
+                                <select name="cal" style="width: 110px;">
+                                    <option value="bajo">bajo</option>
+                                    <option value="medio">medio</option>
+                                    <option value="alto">alto</option>
+                                    <option value="critico">critico</option>
+                                </select>
+                                <input name="idsol" type="hidden" value="{{ sol.id }}">
+                                <input class="btn-danger" type="submit" value="ok">
+                            </form>
+                        {% else %}
+                            {{ sol.calificacion }}
+                        {% endif %}
+                    {% endif %}
+                </th>
+            {% endif %}
+        <tr/>
+    {% endfor %}
+    </tbody>
+</table>

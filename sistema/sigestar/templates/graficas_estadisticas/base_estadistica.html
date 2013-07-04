@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/sigestar.css">
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.1.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}img/glyphicons-halflings-white.png"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script>
+        function cerraralerta() {
+            $('#alert').alert('close');
+        }
+    </script>
+    {% block script_estadistica %}
+
+    {% endblock %}
+    <title>Estadisticas Sigestar</title>
+</head>
+{% block body_action %}
+{% endblock %}
+<header>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="index.html">
+                    <a class="brand" href="./"> Soluciones Racionales SAC </a>
+                </a>
+
+
+                <ul class="nav pull-right" style="margin-right:30px;">
+                        <span class="bienvenido">Bienvenido {{ user.get_full_name }}
+                        <a class="" style="margin-left:10px;" href="/sigestar/logout/">Logout</a>
+                        </span>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<section>
+    <div class="container-fluid">
+        {% block options %}
+
+        {% endblock %}
+        <div class="row-fluid">
+            <div class="span12">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</section>
+<footer>
+    <div id="footer-floor">
+        <center>
+            <p>© 2012 Kodevian SAC. All rights reserved.</p>
+        </center>
+    </div>
+</footer>
+</body>
+</html>

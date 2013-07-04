@@ -1,0 +1,69 @@
+<div class="modal-header">
+    <a class="close" data-dismiss="modal">x</a>
+
+    <h3>Calificar </h3>
+</div>
+</br>
+<div class="model-body">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span6">
+                <form class="form-horizontal">
+                    <div class="control-group">
+                        <label class="control-label" style="font-weight: bold;">Enviada por</label>
+
+                        <div class="controls">
+                            <p>{{ sol.emisor.get_full_name }}</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" style="font-weight: bold;">Fecha de creación</label>
+
+                        <div class="controls">
+                            <p>{{ sol.creacion }}</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" style="font-weight: bold;">Fecha de Termino</label>
+
+                        <div class="controls">
+                            {% if sol.estado == 4 %}
+                                <p>{{ sol.fin }}</p>
+                            {% else %}
+                                <p> ----------- </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" style="font-weight: bold;">Responsable</label>
+
+                        <div class="controls">
+                            <p>{{ sol.receptor.get_full_name }}</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" style="font-weight: bold;">Descripcion</label>
+
+                        <div class="controls">
+                            <p>{{ sol.descripcion }}</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="span5">
+                Calificacion:
+                <form method="post">{% csrf_token %}
+                    <select name="cal">
+                        <option value="bajo">bajo</option>
+                        <option value="medio">medio</option>
+                        <option value="alto">alto</option>
+                    </select>
+                    <input type="submit" class="btn-danger" value="Calificar">
+                    <input type="hidden" name="id" value="{{ sol.id }}">
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 
+
+

@@ -1,0 +1,64 @@
+<script>
+    $(document).ready(function () {
+        $("#form-modal").submit(function () {
+            $.ajax({
+                type: "POST",
+                url: "/sigestar/crear-solicitud/",
+                data: $(this).serialize(),
+                success: function (data) {
+                    $('#myModal').html(data);
+                }
+            });
+            return false
+        });
+    });
+</script>
+<div class="modal-header">
+    <a class="close" data-dismiss="modal" onclick="cerrar_modal()">x</a>
+
+    <h3>Registrar Solicitud</h3>
+</div>
+<form id="form-modal" name="form-modal" class="form-horizontal" method="post" id="fo3"> {% csrf_token %}
+    <div class="modal-body">
+        <div class="control-group">
+            <label class="control-label" for="select01">Solicitante</label>
+
+            <div class="controls">
+                {{ solform.emisor }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="select01">Tipo Registro</label>
+
+            <div class="controls">
+                {{ solform.tipo }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="select01">Categoria</label>
+
+            <div class="controls">
+                {{ solform.categoria }}
+            </div>
+        </div>
+        <div id="rubros_div" class="control-group">
+            <label class="control-label" for="select01">Rubro</label>
+            {{ solform.rubro.errors }}
+            <div class="controls">
+                {{ solform.rubro }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ solform.descripcion.errors }}
+            <label class="control-label" for="textarea">Descripción</label>
+
+            <div class="controls">
+                {{ solform.descripcion }}
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" value="Registrar" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+
