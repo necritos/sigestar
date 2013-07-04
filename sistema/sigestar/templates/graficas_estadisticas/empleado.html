@@ -1,0 +1,89 @@
+
+{% extends "graficas_estadisticas/base_estadistica.html" %}
+{% block script_estadistica %}
+<script type="text/javascript">
+            var chart;
+            function cargar(empleado, solicitudes, mes , anio) {
+                    chart = new Highcharts.Chart({
+                        chart: {
+                            renderTo: 'container',
+                            plotBackgroundColor: null,
+                            plotBorderWidth: null,
+                            plotShadow: false
+                        },
+                        title: {
+                            text: 'Porcentaje de solicitudes ( '+ empleado+', '+ mes +', '+anio+' )'
+                        },
+                        tooltip: {
+                            formatter: function() {
+                                return '<b>'+ this.point.name +'</b>: '+ this.percentage.toFixed(2)  +' %';
+                            }
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    color: '#000000',
+                                    connectorColor: '#000000',
+                                    formatter: function() {
+                                        return '<b>'+ this.point.name +'</b>: '+ this.y +' solicitudes </br>'+
+                                        '('+this.percentage.toFixed(2)  +' %)' ;
+                                    }
+                                }
+                            }
+                        },
+                        series: [{
+                            type: 'pie',
+                            name: 'Browser share',
+                            data: solicitudes
+                        }]
+                    });
+                }
+    </script>
+{% endblock %}
+{% block options %}
+    {% include "opciones.html" %}
+{% endblock %}
+
+{% block body_action %}
+    <body onload="cargar('{{ personal }}',{{ data }},'{{ mes }}','{{ anio }}')">                 
+{% endblock %} 
+{% block body %}
+        <div>
+            <form >
+                <select name="anio">
+                    <option value="0">Todos los años</option>
+                    <option value="2012" >2012</option>
+                    <option value="2013" >2013</option>
+                    <option value="2014" >2014</option>
+                    <option value="2015" >2015</option>
+                </select>
+                <select name="mes">
+                    <option value="0">Todos los meses</option>
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Setiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+                <select name="personal">
+                    <option value="0">Todos los empleados</option>
+                {% for e in emp %}
+                    <option value="{{ e.id }}"> {{ e.get_full_name }}</option>
+                {% endfor %}
+                </select>
+                <input type="submit" value="consultar"/>
+            </form>
+        </div>
+        <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto">
+        </div>                  
+{% endblock %} 

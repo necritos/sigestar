@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block options %}
+    {% include "opciones.html" %}
+{% endblock %}
+{% block body %}
+
+    <div class="span8 ">
+        <div>
+            <p style="margin-top: 30px;">
+                {% if accion == 'editar' %}
+                    El personal fue editado satisfactoriamente.
+                {% elif accion == 'agregar' %}
+                    El personal fue agregado satisfactoriamente. El nombre de usuario y contraseña fueron enviados al
+                    correo.
+                {% elif accion == 'eliminar' %}
+                    El personal fue eliminado satisfactoriamente.
+                {% elif accion == 'horario' %}
+                    El horario se guardo correctamente.
+                {% elif accion == 'rotar' %}
+                    Se hizo el rotado de horarios del personal correctamente.
+                {% elif accion == 'enviar' %}
+                    Se ha enviado sus datos y su nueva contraseña a su e-mail. Gracias.
+                {% endif %}
+            </p>
+        </div>
+        <div>
+            <a class="btn" href="
+                {% if accion == 'editar' or accion == 'eliminar' %}
+                    /sigestar/editar-eliminar-personal/
+                {% elif accion == 'agregar' %}
+                    /sigestar/registrar-personal/
+                {% elif accion == 'horario' %}
+                    /sigestar/cambiar-horario/
+                {% elif accion == 'rotar' %}
+                    /sigestar/rotar-horario/
+                {% elif accion == 'enviar' %}
+                    /sigestar/login/
+                {% endif %}
+            ">
+                {% if accion == 'horario' %}
+                    Cambiar otro horario </a>
+                {% elif accion == 'enviar' %}
+                    Login </a>
+                {% else %}
+                    {{ accion|capfirst }} otro personal</a>
+                {% endif %}
+        </div>
+    </div>
+{% endblock %}

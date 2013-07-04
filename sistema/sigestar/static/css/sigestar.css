@@ -1,0 +1,126 @@
+body {
+    margin-top: 40px;
+}
+
+.activea a {
+    background-color: #999;
+    color: #000;
+}
+
+.activea a:hover {
+    background-color: #ccc;
+}
+
+.bienvenido {
+
+    float: right;
+    margin-top: 10px;
+}
+
+.cola_tareas {
+    border: 1px solid #999;
+
+}
+
+.cola_tareas p {
+    background-color: #ccc;
+    font-size: 16px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.formulario {
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    float: left;
+    border: 1px solid #999;
+}
+
+.navbar .brand {
+    color: #ddd;
+    font-weight: bold;
+    /*text-shadow: rgba(255, 255, 255, 0.0976563) 2px 1px 3px, rgba(255, 255, 255, 0.121094) 0 0 30px;*/
+    padding-left: 0px;
+}
+
+.opciones {
+    width: 100px;
+    display: block;
+
+}
+
+.opciones a {
+    width: 170px;
+
+}
+
+/*bootstrap modificado*/
+.accordion-heading a:hover {
+    text-decoration: none;
+}
+
+.accordion-group {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+}
+
+.subnav {
+    background-color: #EEEEEE;
+    background-image: -webkit-linear-gradient(top, #F5F5F5 0%, #EEEEEE 100%);
+    background-repeat: repeat no-repeat;
+    border-bottom-color: #E5E5E5;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-image: initial;
+    border-left-color: #E5E5E5;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-color: #E5E5E5;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-top-color: #E5E5E5;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-top-style: solid;
+    border-top-width: 1px;
+    height: 36px;
+    width: 100%;
+    margin: 10px 0px 15px 0px;
+}
+
+.pagination a {
+    color: #aaa;
+}
+
+.pagination a:hover {
+    color: #000;
+}
+
+/*clases propias */
+.nombre_bienvenida {
+    color: #fff;
+    margin-right: 20px;
+}
+
+.errorlist {
+    list-style: none;
+    color: red;
+    margin: 10px 0;
+}
+
+.controls {
+    padding-top: 5px;
+}
+
+.form-horizontal .control-group {
+    margin-bottom: 5px;
+}

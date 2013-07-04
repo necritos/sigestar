@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block options %}
+    {% include "opciones.html" %}
+{% endblock %}
+{% block body %}
+    <form method="post"> {% csrf_token %}
+        <div>
+            <div class="control-group">
+                <label>Nombre</label>
+                <select name="arotar">
+                    {% for e in emps %}
+                        <option value="{{ e.id }}"> {{ e.get_full_name }} </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Nombre</label>
+                <select name="rotarpor">
+                    {% for e in emps %}
+                        <option value="{{ e.id }}"> {{ e.get_full_name }} </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn">Rotar</button>
+        </div>
+    </form>
+
+{% endblock %}

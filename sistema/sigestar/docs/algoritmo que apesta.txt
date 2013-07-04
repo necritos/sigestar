@@ -1,0 +1,42 @@
+//deberia existir una lista con los empleados y sus tareas
+List<Asignacion> asignaciones
+
+
+//clase que permite almacenar las tareas por empleado
+class Asignacion
+	List<Tarea> tareas
+	Empleado empleado
+	//calcula el peso de las tareas que debe realizar
+	int peso_tareas()
+		cont = 0
+		for(Tarea tarea: tareas)
+			cont = tarea.peso + cont
+		return cont
+	insertar_tarea(Tarea tarea)
+		pos = 0;
+		for(Tarea aux: tareas)
+			si(tarea.peso > aux.peso)
+				break
+			else
+				pos++
+		tareas.insert(tarea,pos)
+
+//metodo que permite asignar las tareas
+asignacion_tarea(Tarea tarea)
+	Asignacion asignacion = null
+	si(hay_especialista(tarea.tipo))
+		for(Asignacion aux: asignaciones)		
+			si(aux.especialidad==tarea.tipo)
+				si(asignacion==null)
+					asignacion=aux
+				else
+					si(asignacion.peso_tareas() > aux.peso_tareas())
+						asignacion = aux
+	else
+		for(Asignacion aux: asignaciones)
+			si(asignacion==null)
+				asignacion=aux
+			else
+				si(asignacion.peso_tareas() > aux.peso_tareas())
+					asignacion = aux
+	asignacion.insertar_tarea(tarea)

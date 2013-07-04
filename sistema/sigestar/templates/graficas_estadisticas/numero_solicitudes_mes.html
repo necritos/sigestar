@@ -1,0 +1,79 @@
+{% extends "graficas_estadisticas/base_estadistica.html" %}
+{% block script_estadistica %}
+    <script type="text/javascript">
+        var chart;
+        function cargar(dias, mes, solicitudes) {
+            var sol = new Array();
+            for (var i = 0; i < dias; i++) {
+                sol[i] = '' + (i + 1);
+            }
+            chart = new Highcharts.Chart({
+                chart:{
+                    renderTo:'container',
+                    type:'line',
+                    marginRight:130,
+                    marginBottom:25
+                },
+                title:{
+                    text:'Solicitudes por dia',
+                    x:-20 //center
+                },
+                subtitle:{
+                    text:'Grafica de tiempo diario',
+                    x:-20
+                },
+                xAxis:{
+                    categories:sol
+                },
+                yAxis:{
+                    title:{
+                        text:'Solicitudes'
+                    },
+                    plotLines:[
+                        {
+                            value:0,
+                            width:1,
+                            color:'#808080'
+                        }
+                    ]
+                },
+                tooltip:{
+                    formatter:function () {
+                        return '<b>' + this.series.name + '<br/>' +
+                                'dia ' + this.x + '</b><br/>' +
+                                this.y + ' solicitudes';
+                    }
+                },
+                legend:{
+                    layout:'vertical',
+                    align:'right',
+                    verticalAlign:'top',
+                    x:-10,
+                    y:100,
+                    borderWidth:0
+                },
+                series:[
+                    {
+                        name:mes,
+                        data:solicitudes
+                    }
+                ]
+            });
+        }
+
+    </script>
+{% endblock %}
+{% block options %}
+    {% include "opciones.html" %}
+{% endblock %}
+
+{% block body_action %}
+    <body onload="cargar({{ num_dias }},'{{ mes }} - {{ anio }}', {{ data }})">
+{% endblock %}
+{% block body %}
+    <div>
+        {% include "graficas_estadisticas/anio_mes.html" %}
+    </div>
+    <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto">
+    </div>
+{% endblock %} 

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block options %}
+    {% include "opciones.html" %}
+{% endblock %}
+{% block body %}
+    <form class="well" method="post" action="/agregar-turno/"> {% csrf_token %}
+        <fieldset>
+            <div class="control-group">
+                <label>Horario</label>
+                Inicio <input type="text" class="span2" name="ini"/>
+                Fin <input type="text" class="span2" name="fin"/>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn">Agregar</button>
+        </div>
+    </form>
+    <fieldset>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Inicio</th>
+                <th>Fin</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for t in turnos %}
+                <tr>
+                    <td> {{ t.hora_ini|time:"H:i:s" }}</td>
+                    <td> {{ t.hora_fin|time:"H:i:s" }}</td>
+                    <td><a href="/sigestar/eliminar-turno/?id={{ t.id }}">Eliminar</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </fieldset>
+
+{% endblock %}

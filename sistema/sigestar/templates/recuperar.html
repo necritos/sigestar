@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <form action="/enviar/" style="margin-top: 30px;" method="post">{% csrf_token %}
+        <h4>Recuperacion de usuario y contraseña</h4>
+
+        <p style="margin-top: 15px;">Nombre: {{ u.get_full_name }}</p>
+
+        <p style="margin-top: 15px;">Usuario: {{ u.username }}</p>
+
+        <p style="margin-top: 15px;">¿Enviar nueva contraseña al e-mail?</p>
+        <input type="hidden" name="id" value="{{ u.id }}">
+        <input class="btn" style="margin-top: 15px;" type="submit" name="enviar"
+               value="Enviar">
+        <input class="btn" style="margin-top: 15px;" type="submit" name="cancelar"
+               value="Cancelar">
+    </form>
+{% endblock %}

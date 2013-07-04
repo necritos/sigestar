@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block options %}
+    {% include "opciones.html" %}
+{% endblock %}
+{% block body %}
+    <form class="well" method="GET">
+        <fieldset>
+            <div class="control-group">
+                <label>Nombre</label>
+                <select name="per">
+                    {% for e in emps %}
+                        {% if rf.initial.nombre and rf.initial.dni == e.get_profile.dni %}
+                            <option value="{{ e.id }}"
+                                    selected="selected"> {{ rf.initial.nombre }} {{ rf.initial.apellido }} </option>
+                        {% else %}
+                            <option value="{{ e.id }}"> {{ e.get_full_name }} </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn">Cargar</button>
+        </div>
+    </form>
+    <form class="well {{ hidden }}" method="POST">{% csrf_token %}
+        <fieldset>
+            <legend>
+                Editar personal
+            </legend>
+            <div class="control-group">
+                {{ rf.nombre.errors }}
+                <label>Nombre</label>
+                {{ rf.nombre }}
+            </div>
+            <div class="control-group">
+                {{ rf.apellido.errors }}
+                <label>Apellidos</label>
+                {{ rf.apellido }}
+            </div>
+            <div class="control-group">
+                {{ rf.dni.errors }}
+                <label>Dni</label>
+                {{ rf.dni }}
+            </div>
+            <div class="control-group">
+                {{ rf.email.errors }}
+                <label>E-mail</label>
+                {{ rf.email }}
+            </div>
+            <div class="control-group">
+                {{ rf.telefono.errors }}
+                <label>Telefono</label>
+                {{ rf.telefono }}
+            </div>
+            <div class="control-group">
+                {{ rf.direccion.errors }}
+                <label>Direccion</label>
+                {{ rf.direccion }}
+            </div>
+            <div class="control-group">
+                <label>Especialidad</label>
+                {{ rf.especialidad }}
+                <a onclick="function niguno() {
+                $('#id_especialidad option:selected').removeAttr('selected');
+            }
+            niguno()">Ninguno
+                </a>
+            </div>
+            <div class="control-group">
+                <label>Empresa</label>
+                {{ rf.empresa }}
+            </div>
+            <div class="control-group">
+                <label>DBA</label>
+                {{ rf.dba }}
+            </div>
+            <div class="control-group">
+                <label>Administrador</label>
+                {{ rf.admin }}
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn" name="guardar">Guardar</button>
+            <button type="submit" class="btn" name="eliminar">Eliminar</button>
+        </div>
+    </form>
+
+{% endblock %}

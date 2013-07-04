@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/sigestar.css">
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.1.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}img/glyphicons-halflings-white.png"></script>
+    <script>
+        $(document).ready(function () {
+            $("#btn_sol").click(function (event) {
+                event.preventDefault();
+                $.ajax({
+                    type: "GET",
+                    url: "/sigestar/crear-solicitud/",
+                    success: function (output_string) {
+                        $("#myModal").html(output_string);
+                    }});
+            });
+            $('#filtro_subcategoria').hide();
+        });
+
+        function detalles(id) {
+            $.ajax({
+                type: "GET",
+                url: "/sigestar/detalles/" + id,
+                success: function (output_string) {
+                    $("#detalles").html(output_string);
+                }});
+        }
+
+        function calificar(id) {
+            $.ajax({
+                type: "GET",
+                url: "/sigestar/calificar/" + id,
+                success: function (output_string) {
+                    $("#calificar").html(output_string);
+                }});
+        }
+
+        function cerrar_modal() {
+            $('#cola_sol').load("/sigestar/ver-cola/");
+        }
+
+        function marcar() {
+            $.ajax({
+                type: "GET",
+                url: "/sigestar/marcar-asistencia/",
+                success: function (output_string) {
+                    location.reload(true);
+                }
+            });
+        }
+
+        function aparecer_rubro() {
+            if ($('#id_cat').val() == '1' || $('#id_cat').val() == '2') {
+                $('#rubros_div').show();
+            } else {
+                $('#rubros_div').hide();
+            }
+        }
+        function aparecer_filtro(fil) {
+            if (fil == 'conectividad') {
+                $('#filtro_subcategoria').show();
+            } else {
+                $('#filtro_subcategoria').hide();
+            }
+        }
+        function cerraralerta() {
+            $('#alert').alert('close');
+        }
+
+    </script>
+    <title></title>
+</head>
+<body onload="aparecer_rubro()">
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="index.html">
+                <a class="brand" href="./"> Soluciones Racionales </a>
+
+                <!--
+                <img style="margin-left:50px;" src="tools/images/log22.png"/>
+
+                <p><img width="200px"src="tools/images/empresa.png"/></p>
+                -->
+            </a>
+
+            {% if user.is_authenticated %}
+                <ul class="nav pull-right" style="margin-right:30px;">
+                        <span class="bienvenido">Bienvenido {{ user.get_full_name }}
+                        <a class="" style="margin-left:10px;" href="/sigestar/logout/">Logout</a>
+                        </span>
+                </ul>
+            {% endif %}
+            {% if user.get_profile.is_empleado %}
+                <ul class="nav">
+                    {% if asis == 0 %}
+                        <li><a id="asistencia" onclick="marcar()" style="cursor: pointer;">
+                            <i class="icon-warning-sign icon-white"></i>
+                            Marcar asistencia </a>
+                        </li>
+                    {% endif %}
+                    {% if asis == 1 %}
+                        <li><a><i
+                                class="icon-ok-sign icon-white"></i>
+                            Ud ya marco asistencia </a>
+                        </li>
+                    {% endif %}
+                    {% if asis == 2 %}
+                        <li><a><i
+                                class="icon-star icon-white"></i>
+                            Fuera de horario </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="modal hide fade in" id="myModal">
+</div>
+<div class="modal hide fade in" id="detalles" style="width: 70%; left: 15%; margin-left: 0px">
+</div>
+<div class="modal hide fade in" id="calificar" style="width: 70%; left: 15%; margin-left: 0px">
+</div>
+<section>
+    <div class="container-fluid">
+        {% if user.get_profile.is_super %}
+            {% include "opciones.html" %}
+        {% endif %}
+        <div class="row-fluid" style="margin-top: 20px;">
+            <div class="span2">
+                {% block filtro %}{% endblock %}
+            </div>
+            {% if user.get_profile.is_empleado %}
+                <div>
+            {% else %}
+                <div class="span10">
+            {% endif %}
+            {% block body %}{% endblock %}
+            </div>
+            </div>
+        </div>
+</section>
+<footer>
+    <div id="footer-floor">
+        <center>
+            <p>© 2012 Soluciones Racionales SAC. All rights reserved.</p>
+        </center>
+    </div>
+</footer>
+</body>
+</html>

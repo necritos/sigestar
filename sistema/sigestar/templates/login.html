@@ -1,0 +1,83 @@
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css">
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.1.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.js"></script>
+    <script type="text/javascript">
+        var ff = true;
+        function aparecer() {
+            if (ff) {
+                $('#pedir_email').show();
+                ff = false;
+
+            } else {
+                $('#pedir_email').hide();
+                ff = true;
+            }
+        }
+        function pedir() {
+            $.ajax({
+                type: 'GET',
+                url: "/sigestar/recordar-pass/",
+                data: {email: $('#email').val()},
+                success: function (data) {
+                    $("#respuesta").html(data);
+                }
+            });
+        }
+    </script>
+</head>
+<body style="margin-left:auto;width: 900px;">
+<div class="container mini-layout span4" style="margin-left:auto;">
+    <div class="mini-layout-body">
+        <p style="color: red;">
+            {% if error %}
+                {{ error }}
+            {% endif %}
+        </p>
+
+        <form class="well form-vertical" method="POST">{% csrf_token %}
+            <label>Usuario: </label>
+            <input type="text" name="username" class="span3" style="height : 32px">
+            <label>Contraseña: </label>
+            <input type="password" name="password" class="span3" style="height : 32px">
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </div>
+            <a href="#" onclick="aparecer()">¿Olvidaste tu contraseña o usuario?</a>
+        </form>
+        <div id="pedir_email">
+            <input type="email" name="email" class="span3" id="email" placeholder="email"
+                   style="height : 30px; margin-top:7px;">
+            <a class="btn" id="btn_sol" data-toggle="modal" href="#respuesta" onclick="pedir()"> <i
+                    class="icon-user"></i>
+                enviar
+            </a>
+        </div>
+    </div>
+</div>
+<div class="modal hide fade in" id="respuesta" style="width: 70%; left: 15%; margin-left: 0px">
+</div>
+</body>
+<script type="text/javascript">
+    (function () {
+        var box = $('div.container'),
+                w = $(window).width() / 2 - box.outerWidth() / 2;
+        h = $(window).height() / 2 - box.outerHeight() / 2;
+        $('#formulario').hide();
+        box.css({
+            'top': h,
+            'position': 'absolute',
+            'left': w
+        });
+        $('#pedir_email').hide();
+        ff = true;
+    })();
+</script>
+</body>
+</html>
